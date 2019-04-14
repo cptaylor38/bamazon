@@ -3,14 +3,8 @@ var inquirer = require("inquirer");
 
 var connection = mysql.createConnection({
     host: "localhost",
-
-    // Your port; if not 3306
     port: 3306,
-
-    // Your username
     user: "root",
-
-    // Your password
     password: "root",
     database: "bamazon_db"
 });
@@ -20,6 +14,15 @@ connection.connect(function (err) {
     console.log("connected as id " + connection.threadId + "\n");
     start();
 });
+
+intValidate = function (value) {
+    if (!isNaN(value)) {
+        return true;
+    }
+    else {
+        return console.log("That is not a valid price. Numbers only.")
+    }
+}
 
 function start() {
     connection.query("SELECT * FROM products", function (err, results) {
@@ -34,18 +37,18 @@ function start() {
             -----------------------------------------------------------------------------
             `);
         }
-
-
         inquirer
             .prompt([
                 {
                     name: "id",
                     type: "input",
+                    validate: intValidate(value),
                     message: "What's the id of the item you would like to purchase?"
                 },
                 {
                     name: "quantity",
                     type: "input",
+                    validate: intValidate(value),
                     message: "How many would you like to purchase?"
                 }
             ])
@@ -56,7 +59,6 @@ function start() {
                         chosenItem = results[i];
                     }
                 }
-
                 if (chosenItem.stock_quantity >= answer.quantity) {
 
                     console.log(`Your total for ${answer.quantity} of ${chosenItem.product_name} = $${chosenItem.price * answer.quantity}`);
