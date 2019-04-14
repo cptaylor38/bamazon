@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var Table = require('cli-table');
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -31,24 +32,27 @@ function start() {
         console.log('Thank you for visiting Bamazon. Here is a list of our current products');
         console.log('-----------------------------------------------------------------------')
 
+        var table = new Table({
+            head: ['Product Id', 'Product Name', 'Product Price', 'Currently in stock'],
+            colWidths: [15, 25, 15, 35]
+        });
+
         for (var i = 0; i < results.length; i++) {
-            console.log(`
-            ${results[i].id} - ${results[i].product_name}: ${results[i].price}. Currently ${results[i].stock_quantity} in stock.
-            -----------------------------------------------------------------------------
-            `);
+            table.push(
+                [results[i].id, results[i].product_name, `$${results[i].price}`, results[i].stock_quantity]
+            );
         }
+        console.log(table.toString());
         inquirer
             .prompt([
                 {
                     name: "id",
                     type: "input",
-                    validate: intValidate(value),
                     message: "What's the id of the item you would like to purchase?"
                 },
                 {
                     name: "quantity",
                     type: "input",
-                    validate: intValidate(value),
                     message: "How many would you like to purchase?"
                 }
             ])
@@ -76,7 +80,24 @@ function start() {
                         function (error) {
                             if (error) throw err;
                             console.log("Thank you for your purchase.");
-                            start();
+                            inquirer
+                                .prompt([
+                                    {
+                                        type: "confirm",
+                                        message: "Would you like to purchase another item?",
+                                        name: "confirm",
+                                        default: true
+                                    }
+                                ])
+                                .then(function (answer) {
+                                    if (answer.confirm === true) {
+                                        start();
+                                    }
+                                    else {
+                                        connection.end();
+                                        return console.log("Thank you for choosing Bamazon!");
+                                    }
+                                });
                         }
                     );
                 }
