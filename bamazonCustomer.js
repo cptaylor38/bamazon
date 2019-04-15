@@ -103,7 +103,24 @@ function start() {
                 }
                 else {
                     console.log("Sorry, we don't have enough to fulfill your order.");
-                    start();
+                    inquirer
+                        .prompt([
+                            {
+                                type: "confirm",
+                                message: "Would you like to continue shopping?",
+                                name: "confirm",
+                                default: true
+                            }
+                        ])
+                        .then(function (answer) {
+                            if (answer.confirm === true) {
+                                start();
+                            }
+                            else {
+                                connection.end();
+                                return console.log("Thank you for choosing Bamazon!");
+                            }
+                        });
                 }
             });
     });
