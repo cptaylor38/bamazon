@@ -14,8 +14,8 @@ bamazonManager.js - The requirements of this exercise were to:
         4. Add a new product.
 
 ![Customer Start with Table](/screenshots/customerViewStart.png)
-![Unsucessful purchase due to lack of inventory](/screenshots/purchaseUnsuccessful)
-![Successful purchase displaying total cost](/screenshots/purchaseSuccessful)
+![Unsucessful purchase due to lack of inventory](/screenshots/purchaseUnsuccessful.png)
+![Successful purchase displaying total cost](/screenshots/purchaseSuccessful.png)
 
     View Current Products
         1. Displays available products, then follows with asking the user if they would like to add a new product.
@@ -28,6 +28,6 @@ bamazonManager.js - The requirements of this exercise were to:
 
 
 
-![View inventory](/screenshots/viewLow)
-![Add new product](/screenshots/addNew)
+![View inventory](/screenshots/viewLow.png)
+![Add new product](/screenshots/addNew.png)
 
