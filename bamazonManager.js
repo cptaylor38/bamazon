@@ -47,6 +47,27 @@ function start() {
         });
 };
 
+function returnToMenu() {
+    inquirer
+        .prompt([
+            {
+                type: "confirm",
+                message: "Would you like to return to the main menu?",
+                name: "confirm",
+                default: true
+            }
+        ])
+        .then(function (answer) {
+            if (answer.confirm === true) {
+                start();
+            }
+            else {
+                connection.end();
+                return console.log("You may close the application now.");
+            }
+        });
+}
+
 function viewProducts() {
     console.log("this is running");
     connection.query("SELECT * FROM products", function (err, results) {
@@ -179,25 +200,7 @@ function updateStock(chosenItem, newQuantity) {
                 New inventory updated for: Product #${chosenItem.id} - ${chosenItem.product_name} to ${newQuantity}.
                 ------------------------------------------------------------------------------------------------
             `);
-
-            inquirer
-                .prompt([
-                    {
-                        type: "confirm",
-                        message: "Would you like to return to the main menu?",
-                        name: "confirm",
-                        default: true
-                    }
-                ])
-                .then(function (answer) {
-                    if (answer.confirm === true) {
-                        start();
-                    }
-                    else {
-                        connection.end();
-                        return console.log("You may close the application now.");
-                    }
-                });
+            returnToMenu();
         }
     );
 }
@@ -240,25 +243,7 @@ function addProduct() {
                     Product ${answer.name} added to ${answer.department} at $${answer.price} with total inventory: ${answer.stock}.
                     -------------------------------------------------------------------------------------------------
                     `);
-
-                    inquirer
-                        .prompt([
-                            {
-                                type: "confirm",
-                                message: "Would you like to return to the main menu?",
-                                name: "confirm",
-                                default: true
-                            }
-                        ])
-                        .then(function (answer) {
-                            if (answer.confirm === true) {
-                                start();
-                            }
-                            else {
-                                connection.end();
-                                return console.log("You may close the application now.");
-                            }
-                        });
+                    returnToMenu();
                 }
             );
         });
